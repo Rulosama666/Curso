@@ -23,6 +23,17 @@ class Task extends Component
         $this->validate(['task.text' => 'max:40']);
     }
 
+    public function edit(TaskModel $task)
+    {
+        $this->task = $task;
+    }
+
+    public function done(TaskModel $task)
+    {
+        $task->update(['done' => !$task->done]);
+        $this->mount();
+    }
+
     public function save()
     {
         $this->validate();
@@ -31,7 +42,18 @@ class Task extends Component
 
         $this->mount();
 
-        session()->flash('message', 'Tarea guardada correctamente!');
+        $this->emitUp('taskSaved', 'Tarea guardada correctamente!');
+    }
+
+    public function delete($id)
+    {
+        $taskToDelete = TaskModel::find($id);
+
+        if (!is_null($taskToDelete)) {
+            $taskToDelete->delete();
+            $this->emitUp('taskSaved', 'Tarea eliminada correctamente!');
+            $this->mount();
+        }
     }
 
     public function render()

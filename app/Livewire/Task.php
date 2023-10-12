@@ -31,7 +31,7 @@ class Task extends Component
 
         $this->mount();
 
-        session()->flash('message', 'Tarea guardada correctamente!');
+        //session()->flash('message', 'Tarea guardada correctamente!');
     }
 
     public function render()

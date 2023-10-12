@@ -14,7 +14,7 @@ class Task extends Component
 
     public function mount()
     {
-        $this->tasks = TaskModel::orderBy('id', 'desc')->get();
+        $this->tasks = TaskModel::get(); //orderBy('id', 'desc')->
         $this->task = new TaskModel();
     }
 

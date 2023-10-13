@@ -14,13 +14,24 @@ class Task extends Component
 
     public function mount()
     {
-        $this->tasks = TaskModel::orderBy('id', 'desc')->get();
+        $this->tasks = TaskModel::get(); //orderBy('id', 'desc')->
         $this->task = new TaskModel();
     }
 
     public function updatedTaskText()
     {
         $this->validate(['task.text' => 'max:40']);
+    }
+
+    public function edit(TaskModel $task)
+    {
+        $this->task = $task;
+    }
+
+    public function done(TaskModel $task)
+    {
+        $task->update(['done' => !$task->done]);
+        $this->mount();
     }
 
     public function save()
@@ -31,7 +42,22 @@ class Task extends Component
 
         $this->mount();
 
+<<<<<<< HEAD
         session()->flash('message', 'Tarea guardada correctamente!');
+=======
+        $this->emitUp('taskSaved', 'Tarea guardada correctamente!');
+    }
+
+    public function delete($id)
+    {
+        $taskToDelete = TaskModel::find($id);
+
+        if (!is_null($taskToDelete)) {
+            $taskToDelete->delete();
+            $this->emitUp('taskSaved', 'Tarea eliminada correctamente!');
+            $this->mount();
+        }
+>>>>>>> 962000fa518c8bb8440fb70f6cf88a19a33bd256
     }
 
     public function render()
